@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_move_form_billing_period" model="ir.ui.view">
+        <field name="name">account.move.form.billing.period</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Insertion après la date de facture -->
+            <xpath expr="//field[@name='invoice_date']" position="after">
+                <group>
+                    <field name="billing_start_date"/>
+                    <field name="billing_end_date"/>
+                </group>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>
