@@ -8,4 +8,8 @@
         "views/account_move_view.xml",
     ],
     "installable": True,
+	"data": [
+    "views/calendar_event_view.xml",
+],
+
 }
