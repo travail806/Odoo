@@ -1,10 +1,10 @@
 from odoo import models, fields
 
 class CalendarEvent(models.Model):
-    _inherit = 'calendar.event'
+    _inherit = "calendar.event"
 
     recurring_product_id = fields.Many2one(
-        'product.product',
+        "product.product",
         string="Produit récurrent",
-        domain="[('type','=','service')]"
+        domain="[('type','=','service'),('recurring_invoice','=',True)]"
     )

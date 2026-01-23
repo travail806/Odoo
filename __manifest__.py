@@ -2,14 +2,14 @@
     "name": "Invoice Billing Period",
     "version": "1.0",
     "category": "Accounting",
-    "summary": "Add billing start and end dates on invoices",
-    "depends": ["account"],
+    "summary": "Link recurring products to calendar events",
+    "depends": [
+        "calendar",
+        "product",
+        "account",
+    ],
     "data": [
-        "views/account_move_view.xml",
+        "views/calendar_event_view.xml",
     ],
     "installable": True,
-	"data": [
-    "views/calendar_event_view.xml",
-],
-
 }

@@ -1,18 +1,12 @@
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError
-
+from odoo import models, fields
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    billing_start_date = fields.Date(string="Date de début de facturation")
-    billing_end_date = fields.Date(string="Date de fin de facturation")
+    billing_start_date = fields.Date(
+        string="Début de période de facturation"
+    )
 
-    @api.constrains('billing_start_date', 'billing_end_date')
-    def _check_billing_dates(self):
-        for move in self:
-            if move.billing_start_date and move.billing_end_date:
-                if move.billing_end_date < move.billing_start_date:
-                    raise ValidationError(
-                        "La date de fin de facturation doit être postérieure à la date de début."
-                    )
+    billing_end_date = fields.Date(
+        string="Fin de période de facturation"
+    )

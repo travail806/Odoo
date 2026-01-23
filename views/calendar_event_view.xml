@@ -1,13 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="view_calendar_event_form_inherit_recurring_product" model="ir.ui.view">
-        <field name="name">calendar.event.form.inherit.recurring.product</field>
+    <record id="view_calendar_event_form_recurring_product" model="ir.ui.view">
+        <field name="name">calendar.event.form.recurring.product</field>
         <field name="model">calendar.event</field>
         <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='options']" position="inside">
-                <group>
-                    <field name="recurring_product_id"/>
-                </group>
+            <xpath expr="//page[@name='options']/group" position="inside">
+                <field name="recurring_product_id"/>
             </xpath>
         </field>
     </record>
