@@ -4,10 +4,13 @@
         <field name="name">calendar.event.form.recurring.product</field>
         <field name="model">calendar.event</field>
         <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//page[@name='options']/group" position="inside">
-                <field name="recurring_product_id"/>
-            </xpath>
-        </field>
+		<field name="arch" type="xml">
+			<xpath expr="//group" position="inside">
+				<group string="Service récurrent">
+					<field name="recurring_product_id"
+                           options="{'no_create': True}"/>
+				</group>
+			</xpath>
+		</field>
     </record>
 </odoo>

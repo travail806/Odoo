@@ -8,10 +8,8 @@
 
             <!-- Insertion après la date de facture -->
             <xpath expr="//field[@name='invoice_date']" position="after">
-                <group>
                     <field name="billing_start_date"/>
                     <field name="billing_end_date"/>
-                </group>
             </xpath>
 
         </field>

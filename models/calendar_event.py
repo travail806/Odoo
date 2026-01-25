@@ -6,5 +6,5 @@ class CalendarEvent(models.Model):
     recurring_product_id = fields.Many2one(
         "product.product",
         string="Produit récurrent",
-        domain="[('type','=','service'),('recurring_invoice','=',True)]"
+        domain="[('type','=','service'),('is_product_recurrent','=',True)]"
     )
