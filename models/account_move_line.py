@@ -87,5 +87,5 @@ class AccountMoveLine(models.Model):
             quantity=0;
             for event in events:
                   _logger.info("Evenement : %s (%s,%s) : start = %s - end = %s (duration = %s)", event['name'],event['id'],event['recurrence_id'],event['start'], event['stop'], event['duration'])
-                 #quantity=event['duration']
-             #self.quantity = quantity
+                  quantity+=event['duration']
+            self.quantity = quantity
