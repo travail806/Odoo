@@ -10,7 +10,7 @@ class AccountMoveLine(models.Model):
             product = line.product_id
 
             if not product or not move:
-                return
+                continue  
 
             template = product.product_tmpl_id
 
@@ -21,3 +21,17 @@ class AccountMoveLine(models.Model):
             ):
                 days = (move.billing_end_date - move.billing_start_date).days + 1
                 line.quantity = days * template.hours_per_day
+
+    def get_events_between_dates(self):
+        self.ensure_one()
+
+        move = self.move_id
+
+        if not move.billing_start_date or not move.billing_end_date:
+            return []
+
+        return self.env['calendar.event'].search([
+            ('start', '>=', move.billing_start_date),
+            ('stop', '<=', move.billing_end_date),
+            ('recurring_product_id', '=', self.product_id.id),
+        ])

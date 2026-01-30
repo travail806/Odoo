@@ -5,5 +5,6 @@ class ProductTemplate(models.Model):
 
     hours_per_day = fields.Float(
         string="Heures par jour",
-        default=0.0
+        default=7.0,
+        help="Nombre d'heures facturées par jour de formation"
     )
