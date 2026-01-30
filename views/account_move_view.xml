@@ -7,10 +7,8 @@
 
             <!-- Insertion des dates de période de facturation -->
             <xpath expr="//field[@name='invoice_date']" position="after">
-                <group>
                     <field name="billing_start_date"/>
                     <field name="billing_end_date"/>
-                </group>
             </xpath>
 
             <!-- Bouton Générer relevé formations -->

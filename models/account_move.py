@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from odoo import models, fields
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
@@ -5,18 +6,23 @@ import tempfile
 import os
 import base64
 
+=======
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
+>>>>>>> 2fd2036bc81872e200f81e0d0d3162fb85e4aff2
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
     billing_start_date = fields.Date(
-        string="Début de période de facturation"
+        string="Debut de periode de facturation"
     )
 
     billing_end_date = fields.Date(
-        string="Fin de période de facturation"
+        string="Fin de periode de facturation"
     )
 
+<<<<<<< HEAD
     def action_generate_training_pdf(self):
         self.ensure_one()
 
@@ -84,3 +90,14 @@ class AccountMove(models.Model):
             "url": f"/web/content/{attachment.id}?download=true",
             "target": "self",
         }
+=======
+    # ensure billing_end_date always higher than billing_start_date
+    @api.constrains('billing_start_date', 'billing_end_date')
+    def _check_billing_dates(self):
+        for move in self:
+            if move.billing_start_date and move.billing_end_date:
+                if move.billing_end_date < move.billing_start_date:
+                    raise ValidationError(
+                        "La date de fin de facturation doit être postérieure à la date de début."
+                    )
+>>>>>>> 2fd2036bc81872e200f81e0d0d3162fb85e4aff2
