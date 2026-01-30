@@ -75,46 +75,14 @@ class AccountMoveLine(models.Model):
         if not self.product_id:
             return
 
-<<<<<<< HEAD
-            if not product or not move:
-                continue  
-=======
         product = self.env['product.product'].browse(self.product_id.id)
         if product.is_product_recurrent:
-            _logger.info("Produit recurrent selectionne : %s", product.name)        
->>>>>>> 2fd2036bc81872e200f81e0d0d3162fb85e4aff2
-
             # retrieve the events between the start and end date of the invoicing period
             move = self.move_id              
-         
             events = self.get_events_between_dates(move.billing_start_date, move.billing_end_date)
-
-<<<<<<< HEAD
-            if (
-                move.billing_start_date
-                and move.billing_end_date
-                and template.hours_per_day
-            ):
-                days = (move.billing_end_date - move.billing_start_date).days + 1
-                line.quantity = days * template.hours_per_day
-
-    def get_events_between_dates(self):
-        self.ensure_one()
-
-        move = self.move_id
-
-        if not move.billing_start_date or not move.billing_end_date:
-            return []
-
-        return self.env['calendar.event'].search([
-            ('start', '>=', move.billing_start_date),
-            ('stop', '<=', move.billing_end_date),
-            ('recurring_product_id', '=', self.product_id.id),
-        ])
-=======
+           
             quantity=0;
             for event in events:
-                  _logger.info("Evenement : %s (%s,%s) : start = %s - end = %s (duration = %s)", event['name'],event['id'],event['recurrence_id'],event['start'], event['stop'], event['duration'])
-                  quantity+=event['duration']
+                    quantity+=event['duration']
             self.quantity = quantity
->>>>>>> 2fd2036bc81872e200f81e0d0d3162fb85e4aff2
+

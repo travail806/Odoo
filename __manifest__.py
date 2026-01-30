@@ -12,13 +12,8 @@
     ],
     "data": [
         "views/calendar_event_view.xml",
-<<<<<<< HEAD
-        "views/account_move_view.xml",
-        "views/product_template_view.xml",
-=======
         "views/product_recurrent_view.xml",
-        "views/account_move_view.xml"
->>>>>>> 2fd2036bc81872e200f81e0d0d3162fb85e4aff2
+        "views/account_move_view.xml",
     ],
     "installable": True,
 }
