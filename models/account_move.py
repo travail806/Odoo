@@ -89,15 +89,6 @@ class AccountMove(models.Model):
 
         os.remove(path)
 
-        # attachment = self.env["ir.attachment"].create({
-        #     "name": f"releve_formations_{self.name}.pdf",
-        #     "type": "binary",
-        #     "datas": pdf_data,
-        #     "res_model": "account.move.send.wizard",
-        #     "res_id": wizard_id,
-        #     "mimetype": "application/pdf",
-        # })
-
         attachment = self.env["ir.attachment"].create({
         "name": f"releve_formations_{self.name}.pdf",
         "type": "binary",
