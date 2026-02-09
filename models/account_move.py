@@ -13,36 +13,24 @@ class AccountMove(models.Model):
     _inherit = 'account.move'
 
     billing_start_date = fields.Date(
-        string="Début de période de facturation"
+        string="Debut de periode de facturation"
     )
 
     billing_end_date = fields.Date(
-        string="Fin de période de facturation"
+        string="Fin de periode de facturation"
     )
 
-       @api.constrains('billing_start_date', 'billing_end_date')
-    def _check_billing_dates(self):
-        for move in self:
-            if move.billing_start_date and move.billing_end_date:
-                if move.billing_end_date < move.billing_start_date:
-                    raise ValidationError(
-                        "La date de fin de facturation doit être postérieure à la date de début."
-                    )
-        string="Fin de période de facturation"
-    )
-
-
-    def _generate_training_pdf_attachment(self):
     @api.constrains('billing_start_date', 'billing_end_date')
     def _check_billing_dates(self):
         for move in self:
             if move.billing_start_date and move.billing_end_date:
                 if move.billing_end_date < move.billing_start_date:
                     raise ValidationError(
-                        "La date de fin de facturation doit être posterieure à la date de début."
+                        "La date de fin de facturation doit etre posterieure a la date de debut."
                     )
 
 
+    
     def _generate_training_pdf_attachment(self,wizard_id):
         self.ensure_one()
 
