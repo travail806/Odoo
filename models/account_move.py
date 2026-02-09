@@ -1,3 +1,5 @@
+import calendar
+
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
@@ -8,9 +10,15 @@ import tempfile
 import os
 import base64
 
+import logging
+
+_logger = logging.getLogger(__name__)
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
+
+    x_num_marche = fields.Char(string="Numéro de marché")
+    x_num_order = fields.Char(string="Numéro d'engagement")
 
     billing_start_date = fields.Date(
         string="Debut de periode de facturation"
@@ -19,6 +27,12 @@ class AccountMove(models.Model):
     billing_end_date = fields.Date(
         string="Fin de periode de facturation"
     )
+
+    @api.onchange('billing_start_date')
+    def _onchange_billing_start_date(self):
+        if self.billing_start_date:
+            last_day = calendar.monthrange(self.billing_start_date.year,self.billing_start_date.month)[1]
+            self.billing_end_date=self.billing_start_date.replace(day=last_day)
 
     @api.constrains('billing_start_date', 'billing_end_date')
     def _check_billing_dates(self):
@@ -29,7 +43,16 @@ class AccountMove(models.Model):
                         "La date de fin de facturation doit etre posterieure a la date de debut."
                     )
 
+    @api.onchange('billing_end_date')
+    def _onchange_billing_dates_recompute_quantities(self):
+        #_logger.info ("Recompute quantities ")
+        for move in self:
+            if not move.billing_start_date or not move.billing_end_date:
+                continue
 
+            for line in move.invoice_line_ids :
+                if line.product_id and line.product_id.is_product_recurrent:
+                    line.quantity = line._get_product_quantity( move.billing_start_date, move.billing_end_date )
     
     def _generate_training_pdf_attachment(self):
         self.ensure_one()
@@ -88,15 +111,6 @@ class AccountMove(models.Model):
             pdf_data = base64.b64encode(f.read())
 
         os.remove(path)
-
-        # attachment = self.env["ir.attachment"].create({
-        #     "name": f"releve_formations_{self.name}.pdf",
-        #     "type": "binary",
-        #     "datas": pdf_data,
-        #     "res_model": "account.move.send.wizard",
-        #     "res_id": wizard_id,
-        #     "mimetype": "application/pdf",
-        # })
 
         attachment = self.env["ir.attachment"].create({
         "name": f"releve_formations_{self.name}.pdf",

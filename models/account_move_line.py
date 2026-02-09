@@ -72,6 +72,34 @@ class AccountMoveLine(models.Model):
         return res
 
 
+    def _get_product_quantity (self,start_date,end_date):
+        """Calcule la quantité à facturer pour une ligne de facture donnée, à partir des
+        événements calendrier du produit récurrent sur la période donnée."""
+                
+        self.ensure_one()
+
+        if not self.product_id or not start_date or not end_date:
+            return self.quantity
+        
+        product = self.env['product.product'].browse(self.product_id.id)
+        _logger.info ("ID de RECURRENT_PRODUCT %s" % (product.id))
+        
+        if not product.is_product_recurrent:
+            return self.quantity
+         
+        events = self.get_events_between_dates(start_date, end_date)
+        
+        quantity = 0
+        for event in events:
+            rec_prod_id = event['reccurent_product'].id
+            rec_prod = self.env['product.product'].browse(rec_prod_id)
+            _logger.info ("EVENT FOR A RECURRENT_PRODUCT %s" % (rec_prod_id))
+            if rec_prod.id == product.id:
+                    quantity+=event['duration']
+        
+        return quantity
+
+
     @api.onchange('product_id')
     def _onchange_product_compute_hours(self):
         if not self.product_id:
@@ -80,16 +108,5 @@ class AccountMoveLine(models.Model):
         product = self.env['product.product'].browse(self.product_id.id)
         if product.is_product_recurrent:
             # retrieve the events between the start and end date of the invoicing period
-            move = self.move_id              
-            events = self.get_events_between_dates(move.billing_start_date, move.billing_end_date)
-           
-            quantity=0;
-            for event in events:
-                rec_prod_id = event['reccurent_product'].id
-                #_logger.info ("ID de RECURRENT_PRODUCT %s" % (rec_prod_id))
-                rec_prod= self.env['product.product'].browse(rec_prod_id);
-
-                if rec_prod.id == product.id:
-                    quantity+=event['duration']
-            self.quantity = quantity
-
+            move = self.move_id  
+            self.quantity = self._get_product_quantity(move.billing_start_date, move.billing_end_date)

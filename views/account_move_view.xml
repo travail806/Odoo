@@ -11,12 +11,17 @@
                     <field name="billing_end_date"/>
             </xpath>
 
+			<xpath expr="//field[@name='invoice_user_id']" position="after">
+				<field name="x_num_marche" placeholder="25ESVM026D"/>
+				<field name="x_num_order" placeholder="4800136928"/>
+			</xpath>
+			
             <!-- Bouton Générer relevé formations -->
             <xpath expr="//header" position="inside">
                 <button
                     name="action_generate_training_pdf"
                     type="object"
-                    string="Générer relevé formations"
+                    string="Créer Relevé"
                     class="btn-primary"
                 />
             </xpath>
