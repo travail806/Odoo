@@ -19,7 +19,7 @@ class AccountMoveSendWizard(models.TransientModel):
         move = self.move_id
         if move:
             # Génération du PDF complémentaire
-            training_attachment = move._generate_training_pdf_attachment(self.id)
+            training_attachment = move._generate_training_pdf_attachment()
 
             # Éviter les doublons
             existing_ids = {

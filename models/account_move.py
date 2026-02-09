@@ -31,7 +31,7 @@ class AccountMove(models.Model):
 
 
     
-    def _generate_training_pdf_attachment(self,wizard_id):
+    def _generate_training_pdf_attachment(self):
         self.ensure_one()
 
         fd, path = tempfile.mkstemp(suffix=".pdf")
@@ -50,6 +50,8 @@ class AccountMove(models.Model):
             if not line.product_id:
                 continue
 
+            product = self.env['product.product'].browse(line.product_id.id)
+        
             events = line.get_events_between_dates(self.billing_start_date,self.billing_end_date)
 
             content.append(Paragraph(
@@ -63,16 +65,22 @@ class AccountMove(models.Model):
                     styles["Normal"]
                 ))
                 continue
-
+            #Filter only events related to the product
             for event in events:
-                content.append(Paragraph(
-                    f"- {event['name']} | "
-                    f"{event['start'].strftime('%d/%m/%Y')} "
-                    f"{event['start'].strftime('%H:%M')} → "
-                    f"{event['stop'].strftime('%H:%M')} "
-                    f"({event['duration']:.2f} h)",
-                    styles["Normal"]
-                ))
+                rec_prod_id = event['reccurent_product'].id
+                #_logger.info ("ID de RECURRENT_PRODUCT %s" % (rec_prod_id))
+                rec_prod= self.env['product.product'].browse(rec_prod_id);
+
+                if rec_prod.id == product.id:
+
+                    content.append(Paragraph(
+                        f"- {event['name']} | "
+                        f"{event['start'].strftime('%d/%m/%Y')} "
+                        f"{event['start'].strftime('%H:%M')} → "
+                        f"{event['stop'].strftime('%H:%M')} "
+                        f"({event['duration']:.2f} h)",
+                        styles["Normal"]
+                    ))
 
         doc.build(content)
 
@@ -124,18 +132,3 @@ class AccountMove(models.Model):
             res["context"]["default_attachment_ids"] = attachments
 
         return res
-
-    # def action_invoice_sent(self):
-    #     res = super().action_invoice_sent()
-
-    #     self.ensure_one()
-
-    #     attachment = self._generate_training_pdf_attachment()
-
-    #     if res and "context" in res:
-    #         attachments = res["context"].get("default_attachment_ids", [])
-    #         attachments.append(attachment.id)
-
-    #         res["context"]["default_attachment_ids"] = attachments
-
-    #     return res
