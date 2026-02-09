@@ -20,6 +20,19 @@ class AccountMove(models.Model):
         string="Fin de période de facturation"
     )
 
+       @api.constrains('billing_start_date', 'billing_end_date')
+    def _check_billing_dates(self):
+        for move in self:
+            if move.billing_start_date and move.billing_end_date:
+                if move.billing_end_date < move.billing_start_date:
+                    raise ValidationError(
+                        "La date de fin de facturation doit être postérieure à la date de début."
+                    )
+        string="Fin de période de facturation"
+    )
+
+
+    def _generate_training_pdf_attachment(self):
     @api.constrains('billing_start_date', 'billing_end_date')
     def _check_billing_dates(self):
         for move in self:
@@ -108,6 +121,21 @@ class AccountMove(models.Model):
             "url": f"/web/content/{attachment.id}?download=true",
             "target": "self",
         }
+
+    def action_invoice_sent(self):
+        res = super().action_invoice_sent()
+
+        self.ensure_one()
+
+        attachment = self._generate_training_pdf_attachment()
+
+        if res and "context" in res:
+            attachments = res["context"].get("default_attachment_ids", [])
+            attachments.append(attachment.id)
+
+            res["context"]["default_attachment_ids"] = attachments
+
+        return res
 
     # def action_invoice_sent(self):
     #     res = super().action_invoice_sent()

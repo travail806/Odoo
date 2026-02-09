@@ -40,6 +40,7 @@ class AccountMoveLine(models.Model):
                 'stop': event.stop,
                 'duration' : event.duration,
                 'recurrence_id': event.id,
+                'reccurent_product':event.recurring_product_id,
             })
 
         # add recurring event in the list to return
@@ -64,6 +65,7 @@ class AccountMoveLine(models.Model):
                                 'stop': fields.Datetime.add(occurrence, seconds=event.duration * 3600),
                                 'duration': event.duration,
                                 'recurrence_id': event.recurrence_id.id,
+                                'reccurent_product':event.recurring_product_id,
                                 })
         # sort by date (ascending)
         res = sorted(all_events, key=lambda x: x['start'])
@@ -83,6 +85,11 @@ class AccountMoveLine(models.Model):
            
             quantity=0;
             for event in events:
+                rec_prod_id = event['reccurent_product'].id
+                #_logger.info ("ID de RECURRENT_PRODUCT %s" % (rec_prod_id))
+                rec_prod= self.env['product.product'].browse(rec_prod_id);
+
+                if rec_prod.id == product.id:
                     quantity+=event['duration']
             self.quantity = quantity
 
