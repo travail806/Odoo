@@ -8,12 +8,14 @@
     "depends": [
         "calendar",
         "product",
-        "account",
+        "account"
     ],
     "data": [
         "views/calendar_event_view.xml",
         "views/product_recurrent_view.xml",
         "views/account_move_view.xml",
+        "views/report_invoice.xml",
+        "views/res_partner_view.xml",
     ],
     "installable": True,
 }

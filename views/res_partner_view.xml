@@ -1,0 +1,13 @@
+<odoo>
+	<record id="view_partner_form_x_num_etablissement" model="ir.ui.view">
+		<field name="name">res.partner.form.x.num.service</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='company_registry']" position="after">
+				<field name="x_num_service"
+                       placeholder="Numéro de Service"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>
