@@ -18,5 +18,11 @@
         "views/report_invoice.xml",
         "views/res_partner_view.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "calendar_prod_rec/static/src/js/attendee_calendar_model_patch.js",
+            "calendar_prod_rec/static/src/scss/calendar_colors.scss",
+            ],
+    },
     "installable": True,
 }

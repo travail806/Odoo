@@ -4,9 +4,22 @@
 		<field name="model">calendar.event</field>
 		<field name="inherit_id" ref="calendar.view_calendar_event_calendar"/>
 		<field name="arch" type="xml">
+
+			<!-- On retire le rôle de FILTRE de partner_ids, sans supprimer le champ -->
+			<xpath expr="//field[@name='partner_ids']" position="attributes">
+				<attribute name="filters">0</attribute>
+			</xpath>
+
+			<!-- On ajoute recurring_product_id comme nouveau filtre -->
+			<xpath expr="//field[@name='partner_ids']" position="after">
+				<field name="recurring_product_id" filters="1"/>
+			</xpath>
+
+			<!-- Couleur par produit -->
 			<xpath expr="//calendar" position="attributes">
 				<attribute name="color">recurring_product_id</attribute>
 			</xpath>
+
 		</field>
 	</record>
 </odoo>

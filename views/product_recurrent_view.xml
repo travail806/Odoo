@@ -8,6 +8,7 @@
 			<xpath expr="//sheet//group" position="inside">
 				<group string="Recurrence" name="group_recurrence" invisible="type != 'service'">
 					<field name="is_product_recurrent" optional="hide" readonly="type != 'service'"/>
+					<field name="x_color_index" widget="color_picker"/>
 				</group>
 			</xpath>
 		</field>

@@ -8,3 +8,11 @@ class CalendarEvent(models.Model):
         string="Produit récurrent",
         domain="[('type','=','service'),('is_product_recurrent','=',True)]"
     )
+
+    x_event_color_index = fields.Integer(
+        related='recurring_product_id.x_color_index',
+        store=True,
+        string="Couleur (produit)"
+    )
+    
+   

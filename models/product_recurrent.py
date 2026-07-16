@@ -15,6 +15,13 @@ class ProductTemplate(models.Model):
         store=True  # important pour que les onchanges voient la valeur du champ
     )
 
+    x_color_index = fields.Integer(
+        string="Couleur calendrier",
+        default=0,
+        help="Index de couleur (0 à 11) utilisé pour colorer les événements liés à ce produit sur le calendrier."
+    )
+
+
     @api.depends('type')
     def _compute_is_recurrent_visible(self):
         for product in self:
