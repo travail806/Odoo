@@ -1,0 +1,12 @@
+<odoo>
+	<record id="view_calendar_event_calendar_color_by_product" model="ir.ui.view">
+		<field name="name">calendar.event.calendar.color.by.product</field>
+		<field name="model">calendar.event</field>
+		<field name="inherit_id" ref="calendar.view_calendar_event_calendar"/>
+		<field name="arch" type="xml">
+			<xpath expr="//calendar" position="attributes">
+				<attribute name="color">recurring_product_id</attribute>
+			</xpath>
+		</field>
+	</record>
+</odoo>

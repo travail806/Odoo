@@ -12,6 +12,7 @@
     ],
     "data": [
         "views/calendar_event_view.xml",
+        "views/calendar_event_calendar_view.xml",
         "views/product_recurrent_view.xml",
         "views/account_move_view.xml",
         "views/report_invoice.xml",
