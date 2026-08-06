@@ -23,6 +23,7 @@
                     type="object"
                     string="Créer Relevé"
                     class="btn-primary"
+					invisible="state != 'posted' or move_type != 'out_invoice'"
                 />
             </xpath>
 

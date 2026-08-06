@@ -1,34 +1,42 @@
 <odoo>
-	<template id="report_invoice_document_inherit_engagement_marche"
-              inherit_id="account.report_invoice_document">
+	<template id="report_invoice_document_inherit_customed"
+              inherit_id="account.report_invoice_document" priority="20">
 
+		<!-- Ajouter dans le bloc d'information le numéro de service, d'engagement et de marché" -->
 		<xpath expr="//div[@id='informations']" position="inside">
-			<div class="col-auto mw-100 mb-2" t-if="o.x_num_order">
-				<strong>Numéro d'engagement :</strong>
-				<p t-field="o.x_num_order"/>
+			<div class="col" t-if="o.commercial_partner_id.x_num_service" name="num_service">
+				<t t-if="o.commercial_partner_id.x_num_service">
+					<strong>Numéro de service</strong>
+				</t>
+				<div t-field="o.commercial_partner_id.x_num_service"/>
 			</div>
-			<div class="col-auto mw-100 mb-2" t-if="o.x_num_marche">
-				<strong>Numéro de marché :</strong>
-				<p t-field="o.x_num_marche"/>
+
+			<div class="col" t-if="o.x_num_order" name="num_order">
+				<t t-if="o.x_num_order">
+					<strong>Numéro d'engagement</strong>
+				</t>
+				<div t-field="o.x_num_order"/>
+			</div>
+
+			<div class="col" t-if="o.x_num_marche" name="num_marche">
+				<t t-if="o.x_num_marche">
+					<strong>Numéro de marché</strong>
+				</t>
+				<div t-field="o.x_num_marche"/>
 			</div>
 		</xpath>
 
+		<!-- Supprimer les informations sur l'adresse du client et le type d'opération -->
+		<xpath expr="//div[@name='customer_address']" position="replace"/>
+		<xpath expr="//div[@name='operation_type']" position="replace"/>
 
-		<xpath expr="(//address)[1]" position="after">
-			<div class="mb-0" t-if="o.commercial_partner_id.x_num_service">
-				Numéro de service : <t t-esc="o.commercial_partner_id.x_num_service"/>
-			</div>
-		</xpath>
-		<xpath expr="(//address)[2]" position="after">
-			<div class="mb-0" t-if="o.commercial_partner_id.x_num_service">
-				Numéro de service : <t t-esc="o.commercial_partner_id.x_num_service"/>
-			</div>
-		</xpath>
-		<xpath expr="(//address)[3]" position="after">
-			<div class="mb-0" t-if="o.commercial_partner_id.x_num_service">
-				Numéro de service : <t t-esc="o.commercial_partner_id.x_num_service"/>
-			</div>
-		</xpath>
+
+		<!-- Supprimer l'en-tête de colonne "Taxes" -->
+		<xpath expr="//table[@name='invoice_line_table']//thead//th[@name='th_taxes']" position="replace"/>
+
+		<!-- Supprimer la cellule "Taxes" de chaque ligne -->
+		<xpath expr="//table[@name='invoice_line_table']//tbody//td[@name='td_taxes']" position="replace"/>
+		
 
 	</template>
 </odoo>

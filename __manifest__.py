@@ -8,7 +8,8 @@
     "depends": [
         "calendar",
         "product",
-        "account"
+        "account",
+        "l10n_fr_account",
     ],
     "data": [
         "views/calendar_event_view.xml",

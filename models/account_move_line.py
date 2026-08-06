@@ -4,6 +4,7 @@ import pytz
 from datetime import datetime
 
 import logging
+import pprint
 
 _logger = logging.getLogger(__name__)
 
@@ -13,8 +14,11 @@ class AccountMoveLine(models.Model):
     def get_events_between_dates(self, start_date, end_date):
         
         # date conversion
+
         start_datetime = fields.Datetime.to_datetime(start_date)
         end_datetime = fields.Datetime.to_datetime(end_date)
+        _logger.info("Start Date - End Date : %s - %s", start_datetime,end_datetime)
+
         local_tz = pytz.timezone('Europe/Paris')
         start_local = local_tz.localize(start_datetime)
         end_local = local_tz.localize(end_datetime)
@@ -30,6 +34,8 @@ class AccountMoveLine(models.Model):
             ('stop', '<=', end_utc),
             ('recurrency', '=', False),
         ])
+        _logger.info("Événements non récurrents trouvés en base : %s", non_recurrent_events.ids)
+
 
         # add non recurrent event in the list to return
         for event in non_recurrent_events:
@@ -47,6 +53,8 @@ class AccountMoveLine(models.Model):
         recurrent_events = self.env['calendar.event'].search([
             ('recurrency', '=', True),
         ])
+        _logger.info("Événements récurrents trouvés en base : %s", recurrent_events.ids)
+
 
         # search occurrences in the given period
         for event in recurrent_events:
@@ -69,6 +77,9 @@ class AccountMoveLine(models.Model):
                                 })
         # sort by date (ascending)
         res = sorted(all_events, key=lambda x: x['start'])
+
+        _logger.info("Contenu de all_events :\n%s", pprint.pformat(res))
+
         return res
 
 
