@@ -80,7 +80,8 @@ class AccountMove(models.Model):
         logo = ""
         if company.logo:
             logo_stream = io.BytesIO(base64.b64decode(company.logo))
-            logo = Image(logo_stream, width=4*cm, height=4*cm)
+            logo = Image(logo_stream, width=6*cm, height=6*cm, kind='proportional')
+
 
         # Adresse
         address = f"""
@@ -97,15 +98,17 @@ class AccountMove(models.Model):
 
         header = Table(
             [[logo, address_paragraph]],
-            colWidths=[5 * cm, 12 * cm]
+            colWidths=[6.5 * cm, 10.5 * cm]
         )
 
         header.setStyle(TableStyle([
             ("VALIGN", (0, 0), (-1, -1), "TOP"),
             ("ALIGN", (0, 0), (0, 0), "LEFT"),
-            ("ALIGN", (1, 0), (1, 0), "RIGHT"),
+            ("ALIGN", (1, 0), (1, 0), "LEFT"),
             ("BOTTOMPADDING", (0, 0), (-1, -1), 12),
+            ("LEFTPADDING", (1, 0), (1, 0), 12),  # petit espace entre logo et texte
         ]))
+
 
         content.append(header)
 
